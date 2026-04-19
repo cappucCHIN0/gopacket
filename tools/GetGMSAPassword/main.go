@@ -204,13 +204,13 @@ func main() {
 		}
 	}
 
-	if target.Port == 0 {
-		if *useLDAPS {
-			target.Port = 636
-		} else {
-			target.Port = 389
-		}
+	if *useLDAPS{
+		target.Port = 636
+	} else {
+		target.Port = 389
 	}
+
+	log.Printf("[debug] connecting host=%s port=%d useLDAPS=%v", target.Host, target.Port, *useLDAPS)
 
 	client := ldap.NewClient(target, &creds)
 	defer client.Close()
